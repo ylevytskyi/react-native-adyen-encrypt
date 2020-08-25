@@ -50,12 +50,11 @@ class AdyenEncryptor {
         return promise
     }
 
-    identify(token: String, paymentData: String, callbackSuccess, callbackError): Promise<any> {
+    identify(token: String, paymentData: String): Promise<any> {
         const promise = new Promise<any>((resolve, reject) => {
             const successSubscription = this.emitter.addListener(
                 "AdyenCardEncryptedSuccess",
                 (result: any) => {
-                    callbackSuccess(result);
                     successSubscription.remove();
                     resolve(result)
                 }
@@ -63,7 +62,6 @@ class AdyenEncryptor {
             const errorSubscription = this.emitter.addListener(
                 "AdyenCardEncryptedError",
                 (result: any) => {
-                    callbackError(result);
                     errorSubscription.remove();
                     reject(result);
                 }
@@ -73,13 +71,12 @@ class AdyenEncryptor {
         return promise;
     }
 
-    challenge(token: String, paymentData: String, callbackSuccess, callbackError): Promise<String> {
+    challenge(token: String, paymentData: String): Promise<String> {
         console.log('on challenge challenge')
         const promise = new Promise<String>((resolve, reject) => {
             const successSubscription = this.emitter.addListener(
                 "AdyenCardEncryptedSuccess",
                 (result: String) => {
-                    callbackSuccess(result);
                     successSubscription.remove()
                     resolve(result)
                 }
@@ -87,7 +84,6 @@ class AdyenEncryptor {
             const errorSubscription = this.emitter.addListener(
                 "AdyenCardEncryptedError",
                 (result: String) => {
-                    callbackError(result);
                     errorSubscription.remove()
                     reject(result)
                 }
